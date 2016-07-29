@@ -1,4 +1,6 @@
 import praw
+from praw.helpers import convert_id36_to_numeric_id as id36_to_dec
+from praw.helpers import convert_numeric_id_to_id36 as dec_to_id36
 
 # Read details from file
 with open("client_auth.txt") as f:
@@ -14,22 +16,20 @@ bot_message += "I am a bot, created by /u/krytorii. Please leave any feedback in
 reddit = praw.Reddit("Linux/python/PRAW:com.alexharman.DoylistBot:v0.1 (by /u/krytorii)")
 reddit.set_oauth_app_info(client_id, client_secret, "http://127.0.0.1:65010/authorize_callback")
 reddit.refresh_access_information(token)
-
 print "Successfully authorised"
 
 # Do this when we start up so we don't respond to threads we've already responded to
 my_comments = reddit.get_me().get_comments()
 last_submission = 0
 for comment in my_comments:
-    last_submission = max(praw.helpers.convert_id36_to_numeric_id(comment.submission.fullname[3:]), last_submission)
+    last_submission = max(id36_to_dec(comment.submission.fullname[3:]), last_submission)
 
-print "Most recent comment was on post " + praw.helpers.convert_numeric_id_to_id36(last_submission)
+print "\nMost recent comment was on post " + dec_to_id36(last_submission)
 
-print "Entering main loop"
+print "\nEntering main loop"
 subreddit = reddit.get_subreddit("DoylistBot")
-
 for post in praw.helpers.submission_stream(reddit, subreddit):
-    if praw.helpers.convert_id36_to_numeric_id(post.fullname[3:]) > last_submission:
-        print str(post.fullname) + " herehere " + str(post)
-        post.add_comment(bot_message)
-    last_submission = praw.helpers.convert_id36_to_numeric_id(post.fullname[3:])
+    if id36_to_dec(post.fullname[3:]) > last_submission:
+        last_comment = post.add_comment(bot_message)
+        last_comment.downvote()
+        last_submission = praw.helpers.id36_dec(post.fullname[3:])
