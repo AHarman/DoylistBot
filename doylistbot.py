@@ -15,17 +15,21 @@ reddit = praw.Reddit("Linux/python/PRAW:com.alexharman.DoylistBot:v0.1 (by /u/kr
 reddit.set_oauth_app_info(client_id, client_secret, "http://127.0.0.1:65010/authorize_callback")
 reddit.refresh_access_information(token)
 
-# Do this when we start up so we don't respond to threads we've already responded to
-my_comments = reddit.get_me().get_comments(1)
-for comment in my_comments:
-    last_submission = praw.helpers.convert_id36_to_numeric_id(comment.submission.fullname[3:])
+print "Successfully authorised"
 
+# Do this when we start up so we don't respond to threads we've already responded to
+my_comments = reddit.get_me().get_comments()
+last_submission = 0
+for comment in my_comments:
+    last_submission = max(praw.helpers.convert_id36_to_numeric_id(comment.submission.fullname[3:]), last_submission)
+
+print "Most recent comment was on post " + praw.helpers.convert_numeric_id_to_id36(last_submission)
+
+print "Entering main loop"
 subreddit = reddit.get_subreddit("DoylistBot")
 
-
-# Main loop
 for post in praw.helpers.submission_stream(reddit, subreddit):
     if praw.helpers.convert_id36_to_numeric_id(post.fullname[3:]) > last_submission:
-        print post
+        print str(post.fullname) + " herehere " + str(post)
         post.add_comment(bot_message)
     last_submission = praw.helpers.convert_id36_to_numeric_id(post.fullname[3:])
