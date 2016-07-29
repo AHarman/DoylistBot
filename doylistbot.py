@@ -10,7 +10,7 @@ with open("token.txt") as f:
     token = f.readline()
 
 bot_message =  "Please use this comment to contain all your Doylist (out of universe) answers and comments.\n\n"
-bot_message += "I am a bot, created by /u/krytorii. Please leave any feedback in /r/doylistbot"
+bot_message += "I am a bot, created by /u/krytorii. Please leave any feedback in /r/doylistbot. [Source code available](github.com/AHarman/DoylistBot)"
 
 # Login
 reddit = praw.Reddit("Linux/python/PRAW:com.alexharman.DoylistBot:v0.1 (by /u/krytorii)")
