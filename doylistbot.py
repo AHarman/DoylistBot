@@ -10,7 +10,7 @@ with open("token.txt") as f:
     token = f.readline()
 
 bot_message =  "Please use this comment to contain all your Doylist (out of universe) answers and comments.\n\n"
-bot_message += "I am a bot, created by /u/krytorii. Please leave any feedback in /r/doylistbot. [Source code available](github.com/AHarman/DoylistBot)"
+bot_message += "I am a bot, created by /u/krytorii. Please leave any feedback in /r/doylistbot. [Source code available](http://github.com/AHarman/DoylistBot)"
 
 # Login
 reddit = praw.Reddit("Linux/python/PRAW:com.alexharman.DoylistBot:v1.0 (by /u/krytorii)")
@@ -32,4 +32,4 @@ for post in praw.helpers.submission_stream(reddit, subreddit):
     if id36_to_dec(post.fullname[3:]) > last_submission:
         last_comment = post.add_comment(bot_message)
         last_comment.downvote()
-        last_submission = praw.helpers.id36_dec(post.fullname[3:])
+        last_submission = id36_to_dec(post.fullname[3:])
