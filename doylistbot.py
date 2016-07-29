@@ -13,7 +13,7 @@ bot_message =  "Please use this comment to contain all your Doylist (out of univ
 bot_message += "I am a bot, created by /u/krytorii. Please leave any feedback in /r/doylistbot. [Source code available](github.com/AHarman/DoylistBot)"
 
 # Login
-reddit = praw.Reddit("Linux/python/PRAW:com.alexharman.DoylistBot:v0.1 (by /u/krytorii)")
+reddit = praw.Reddit("Linux/python/PRAW:com.alexharman.DoylistBot:v1.0 (by /u/krytorii)")
 reddit.set_oauth_app_info(client_id, client_secret, "http://127.0.0.1:65010/authorize_callback")
 reddit.refresh_access_information(token)
 print "Successfully authorised"
